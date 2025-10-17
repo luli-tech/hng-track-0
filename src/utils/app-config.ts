@@ -9,9 +9,9 @@ export class AppConfig {
   static CAT_API_URL: string;
 
   static init(configService: ConfigService) {
-    const port = configService.get<number>('PORT');
-    const rateLimitMax = configService.get<number>('RATE_LIMIT');
-    const rateTtl = configService.get<number>('RATE_TTL');
+    const port = Number(configService.get('PORT'));
+    const rateLimitMax = Number(configService.get('RATE_LIMIT'));
+    const rateTtl = Number(configService.get('RATE_TTL'));
     const catApiUrl = configService.get<string>('CAT_API_URL');
 
     if (!port) AppExceptions.missingEnv('PORT');
