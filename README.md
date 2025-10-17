@@ -106,6 +106,7 @@ pnpm run start:prod
 - TypeScript
 - Axios (For API requests)
 - PNPM (Package manager)
+- express-rate-limit(rate-limiting)
 
 ---
 
