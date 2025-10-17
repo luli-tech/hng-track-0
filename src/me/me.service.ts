@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { MeRepository } from './me.repository';
-import { MeResponse, MeErrorResponse } from '../types/me.types';
-
+import { MeResponse, MeErrorResponse } from '../utils/types';
+import { AppConfig } from 'src/utils/app-config';
 @Injectable()
 export class MeService {
   constructor(private readonly meRepository: MeRepository) {}
@@ -10,7 +10,8 @@ export class MeService {
   async getProfile(): Promise<MeResponse | MeErrorResponse> {
     try {
       const user = await this.meRepository.getUserProfile();
-      const catResponse = await axios.get('https://catfact.ninja/fact', {
+
+      const catResponse = await axios.get(AppConfig.CAT_API_URL, {
         timeout: 5000,
       });
 
