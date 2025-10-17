@@ -1,7 +1,7 @@
 ■ HNG Stage 0 – Me API (NestJS)
-A simple **NestJS** API that exposes a `/me` endpoint returning a user profile and a random cat
+A simpleNestJS API that exposes a `/me` endpoint returning a user profile and a random cat
 fact.
-Built as part of the **HNG Stage 0 backend task**.
+Built as part of theHNG Stage 0 backend task.
 
 ---
 
@@ -12,9 +12,9 @@ Built as part of the **HNG Stage 0 backend task**.
 - `user`: includes `email`, `name`, `stack`
 - `timestamp`: current UTC time in ISO format
 - `fact`: a cat fact fetched from the [Cat Facts API](https://catfact.ninja/fact)
-  ■ Every request fetches a **new cat fact**
-  ■ Returns **application/json** response
-  ■ Code follows **NestJS best practices** (controller, service, repository, and types)
+  ■ Every request fetches anew cat fact
+  ■ Returnsapplication/json response
+  ■ Code followsNestJS best practices (controller, service, repository, and types)
 
 ---
 
@@ -39,7 +39,7 @@ me.types.ts
 ■■ Setup Instructions
 1■■ Clone the Repository
 ```bash
-git clone https://github.com//.git
+git clone https://github.com/luli-tech/hng-track-0
 cd
 ````
 
@@ -89,35 +89,19 @@ pnpm run build
 pnpm run start:prod
 ```
 
----
-
 ■ Technologies Used
 
-- **NestJS** (Framework)
-- **TypeScript**
-- **Axios** (For API requests)
-- **PNPM** (Package manager)
-
----
-
-■ Acceptance Criteria Checklist
-■ GET `/me` endpoint accessible and returns 200 OK
-■ Follows defined JSON schema
-■ Includes `status`, `user`, `timestamp`, and `fact` fields
-■ User object contains valid strings for `email`, `name`, and `stack`
-■ Timestamp updates dynamically on each request
-■ Fetches new cat fact each time
-■ Content-Type is `application/json`
-■ Code follows NestJS best practices
-
----
+-NestJS (Framework)
+-TypeScript
+-Axios (For API requests)
+-PNPM (Package manager)
 
 ■■■ Author
-**Olabode Micheal Ayomikun**
+Olabode Micheal Ayomikun
 ■ olabodemicheal5@gmail.com
 ■ [https://github.com/](https://github.com/)
 
 ---
 
 ■ License
-This project is licensed under the **MIT License**
+This project is licensed under theMIT License
