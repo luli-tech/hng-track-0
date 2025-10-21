@@ -1,4 +1,3 @@
-// src/utils/app-config.ts
 import { ConfigService } from '@nestjs/config';
 import { AppExceptions } from './exceptions';
 import { Logger } from '@nestjs/common';

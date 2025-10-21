@@ -7,7 +7,8 @@ export class MeController {
   @Get()
   async root() {
     return {
-      message: 'Welcome to the hng track-0. Access your profile at /me',
+      message:
+        'Welcome to the hng internship. Access your profile at /me,/analyse',
     };
   }
 

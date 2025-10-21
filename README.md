@@ -1,80 +1,59 @@
-# HNG Stage 0 – Me API (NestJS)
+# HNG Combined Project - Stage 0 (Me API) + Stage 1 (String Analyzer API)
 
-A simple NestJS API that exposes a `/me` endpoint returning a user profile and a random cat fact.
-Built as part of the HNG Stage 0 backend task.
+Author: Olabode Micheal Ayomikun
+Email: olabodemicheal5@gmail.com
+GitHub: https://github.com/luli-tech
 
----
+## Overview
 
-## ■ Features
+This repository currently contains all two stages in a single NestJS project:
 
-GET /me returns a JSON object with:
+- ## Stage 0 — Me API
+- `GET /me` returns a user profile and a cat fact (fetched live from Cat Facts API).
+- ## Stage 1 — String Analyzer API
+- Provides endpoints to analyze strings, persist them server-side, filter them (including natural language f
+  iltering), and delete them.
 
-- `status`: "success"
-- `user`: includes `email`, `name`, `stack`
-- `timestamp`: current UTC time in ISO format
-- `fact`: a cat fact fetched from the [Cat Facts API](https://catfact.ninja/fact)
-  ■ Every request fetches a new cat fact
-  ■ Returns application/json response
-  ■ Code follows NestJS best practices (controller, service, repository, and types)
+## Requirements
 
----
+- Node.js 18+
+- pnpm or npm
 
-## ■ Folder Structure
+## Setup
 
-```
-src/
-■■■ me/
-■ ■■■ me.controller.ts
-■ ■■■ me.service.ts
-■ ■■■ me.repository.ts
-■ ■■■ me.module.ts
-■■■ types/
-■■■ me.types.ts
-main.ts
-app.module.ts
-```
+1. Install dependencies:
 
----
-
-## ■■ Setup Instructions
-
-### 1■■ Clone the Repository
-
-```
-git clone https://github.com/luli-tech/hng-track-0
-cd hng-track-0
-```
-
-### 2■■ Install Dependencies
-
-```
+```bash
+npm install
+# or
 pnpm install
 ```
 
-### 3■■ environment variables
+2. Environment variables (optional):
 
+```
 PORT=3000
 CAT_API_URL=https://catfact.ninja/fact
-RATE_LIMIT=5
-RATE_TTL=60000
-
-### 3■■ Run the App
-
-```
-pnpm run start:dev
 ```
 
-## The app will start on http://localhost:3000
+3. Run in development:
 
-## ■ Testing the Endpoint
-
-You can test the endpoint using your browser, Postman, or curl:
-
-```
-curl http://localhost:3000/me
+```bash
+npm run start:dev
 ```
 
-### Example Response
+## Server will run at `http://localhost:3000`.
+
+## Stage 0 — Me API
+
+### Endpoint
+
+```
+GET /me
+
+```
+
+### Response example
 
 ```json
 {
@@ -84,40 +63,107 @@ curl http://localhost:3000/me
     "name": "Olabode Micheal Ayomikun",
     "stack": "Node.js/NestJS"
   },
-  "timestamp": "2025-10-16T12:00:00.000Z",
+  "timestamp": "2025-10-21T12:00:00.000Z",
   "fact": "Cats have five toes on their front paws but only four on the back ones."
 }
 ```
 
 ---
 
-## ■■ Build for Production
+## Stage 1 — String Analyzer API
+
+Base URL: `http://localhost:3000/strings`
+
+### 1) Create / Analyze String
 
 ```
-pnpm run build
-pnpm run start:prod
+POST /strings
+Content-Type: application/json
+Body:
+{ "value": "madam" }
 ```
 
+Response (201):
+
+```json
+{
+  "id": "<sha256_hash>",
+  "value": "madam",
+  "properties": {
+    "length": 5,
+    "is_palindrome": true,
+    "unique_characters": 3,
+    "word_count": 1,
+    "sha256_hash": "<sha256_hash>",
+    "character_frequency_map": { "m": 2, "a": 2, "d": 1 }
+  },
+  "created_at": "2025-10-21T12:00:00.000Z"
+}
+```
+
+### 2) Get All Strings (filters supported)
+
+```
+GET /strings?is_palindrome=true&min_length=1&contains_character=a
+```
+
+### 3) Get Specific String
+
+```
+GET /strings/{string_value}
+```
+
+### 4) Delete String
+
+```
+DELETE /strings/{string_value}
+```
+
+### 5) Natural Language Filtering
+
+```
+GET /strings/filter-by-natural-language?query=all%20single%20word%20palindromic%20strings
+```
+
+### Notes
+
+- Persistent storage uses `node-localstorage` and stores data in `./local_storage`.
+- To reset stored strings remove the `local_storage` directory.
+
 ---
 
-## ■ Technologies Used
+## Example curl commands
 
-- NestJS (Framework)
-- TypeScript
-- Axios (For API requests)
-- PNPM (Package manager)
-- express-rate-limit(rate-limiting)
+Create:
+
+```bash
+curl -X POST http://localhost:3000/strings -H "Content-Type: application/json" -d '{"value":"madam"}'
+```
+
+Get all:
+
+```bash
+curl http://localhost:3000/strings
+```
+
+Natural language filter:
+
+````bash
+curl "http://localhost:3000/strings/filter-by-natural-language?query=single%20word%20palindromic%20string```
+Me endpoint:
+```bash
+curl http://localhost:3000/me
+````
 
 ---
 
-## ■ Author
+## Files included
 
-Olabode Micheal Ayomikun
-■ olabodemicheal5@gmail.com
-■ [https://github.com/luli-tech](https://github.com/luli-tech)
+- src/me/\* (Stage 0)
+- src/string-analyser/\* (Stage 1)
+- package.json
+- README.md
 
----
+## License
 
-## ■ License
-
-This project is licensed under the MIT License
+MIT
