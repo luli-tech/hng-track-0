@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MeModule } from './me/me.module';
 import { StringAnalyserModule } from './string-analyser/string-analyser.module';
+import { RestCountriesModule } from './rest-countries/rest-countries.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { StringAnalyserModule } from './string-analyser/string-analyser.module';
     }),
     MeModule,
     StringAnalyserModule,
+    RestCountriesModule,
   ],
 })
 export class AppModule {}
