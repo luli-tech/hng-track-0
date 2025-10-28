@@ -17,6 +17,7 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
   // gobal rate limitin
+  app.set("trust proxy", 1);
   app.use(
     rateLimit({
       windowMs: AppConfig.RATE_TTL,
