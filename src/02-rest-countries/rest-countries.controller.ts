@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { RestCountriesService } from './rest-countries.service';
 import type { Response } from 'express';
-import { existsSync, readFileSync } from 'fs';
+
 
 @Controller('restCountries')
 export class RestCountriesController {
