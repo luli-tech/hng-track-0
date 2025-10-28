@@ -2,9 +2,8 @@
 import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.services';
 import axios from 'axios';
-import { Prisma } from '@prisma/client';
 import { SvgService } from './svgservice';
-
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class RestCountriesService {
