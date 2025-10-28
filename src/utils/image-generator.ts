@@ -1,7 +1,7 @@
 // src/utils/image-generator.ts
 import { createCanvas } from 'canvas';
 import * as fs from 'fs';
-import * as path from 'path'
+import * as path from 'path';
 
 export async function generateSummaryImage(stats: {
   totalCountries: number;
@@ -23,7 +23,11 @@ export async function generateSummaryImage(stats: {
 
   ctx.font = '20px Arial';
   ctx.fillText(`Total Countries: ${stats.totalCountries}`, 50, 140);
-  ctx.fillText(`Last Refreshed: ${stats.lastRefreshedAt.toISOString()}`, 50, 180);
+  ctx.fillText(
+    `Last Refreshed: ${stats.lastRefreshedAt.toISOString()}`,
+    50,
+    180,
+  );
 
   ctx.fillText('Top 5 by Estimated GDP:', 50, 240);
   stats.topCountries.forEach((c, i) => {

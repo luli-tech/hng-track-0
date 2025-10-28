@@ -1,7 +1,6 @@
 // src/rest-countries/dto/create-rest-country.dto.ts
 import { IsNumber, IsOptional, IsString, IsNotEmpty } from 'class-validator';
 
-
 export class CreateRestCountryDto {
   @IsString()
   @IsNotEmpty()
@@ -18,7 +17,6 @@ export class CreateRestCountryDto {
   @IsNumber()
   @IsNotEmpty()
   population: number;
-
 
   @IsString()
   @IsOptional()

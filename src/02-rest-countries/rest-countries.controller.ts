@@ -1,5 +1,14 @@
 // src/02-rest-countries/rest-countries.controller.ts
-import { Controller, Get, Post, Delete, Param, Query, Res, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Param,
+  Query,
+  Res,
+  HttpCode,
+} from '@nestjs/common';
 import { RestCountriesService } from './rest-countries.service';
 import type { Response } from 'express';
 import { existsSync, readFileSync } from 'fs';
@@ -14,25 +23,22 @@ export class RestCountriesController {
     return this.service.refreshCountries();
   }
 
-
   @Get('countries')
   async getAll(@Query() query: any) {
     return this.service.getAll(query);
   }
 
   @Get('countries/image')
-async getImage(@Res() res: Response) {
-  const svg = await this.service.getSvg();
-  res.setHeader('Content-Type', 'image/svg+xml');
-  return res.send(svg);
-}
-
+  async getImage(@Res() res: Response) {
+    const svg = await this.service.getSvg();
+    res.setHeader('Content-Type', 'image/svg+xml');
+    return res.send(svg);
+  }
 
   @Get('countries/:name')
   async getOne(@Param('name') name: string) {
     return this.service.getByName(name);
   }
-
 
   @Delete('countries/:name')
   async delete(@Param('name') name: string) {
@@ -43,6 +49,4 @@ async getImage(@Res() res: Response) {
   async getStatus() {
     return this.service.getStatus();
   }
-
-
 }

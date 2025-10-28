@@ -43,30 +43,35 @@ export class RestCountriesService {
   }
 
   /** Refresh all countries data */
-   async refreshCountries() {
+  async refreshCountries() {
     const { countries, rates } = await this.fetchExternalData();
     const now = new Date();
 
-    const existing = await this.prisma.country.findMany({ select: { id: true, name: true } });
+    const existing = await this.prisma.country.findMany({
+      select: { id: true, name: true },
+    });
     const existingMap: Record<string, number> = {};
     for (const e of existing) existingMap[e.name.toLowerCase()] = e.id;
 
     const ops: Prisma.PrismaPromise<any>[] = [];
 
     for (const c of countries) {
-      const currency_code = Array.isArray(c.currencies) && c.currencies.length > 0
-        ? c.currencies[0]?.code ?? null
-        : null;
+      const currency_code =
+        Array.isArray(c.currencies) && c.currencies.length > 0
+          ? (c.currencies[0]?.code ?? null)
+          : null;
 
       let exchange_rate: number | null = null;
       let estimated_gdp: number | null = null;
       const population = Number(c.population ?? 0);
 
       if (currency_code) {
-        const rateVal = rates?.[currency_code] ?? rates?.rates?.[currency_code] ?? null;
+        const rateVal =
+          rates?.[currency_code] ?? rates?.rates?.[currency_code] ?? null;
         exchange_rate = rateVal ? Number(rateVal) : null;
         if (exchange_rate) {
-          estimated_gdp = (population * this.randomMultiplier(1000, 2000)) / exchange_rate;
+          estimated_gdp =
+            (population * this.randomMultiplier(1000, 2000)) / exchange_rate;
         }
       }
 
@@ -86,7 +91,9 @@ export class RestCountriesService {
       };
 
       if (existingId) {
-        ops.push(this.prisma.country.update({ where: { id: existingId }, data }));
+        ops.push(
+          this.prisma.country.update({ where: { id: existingId }, data }),
+        );
       } else {
         ops.push(this.prisma.country.create({ data }));
       }
@@ -101,35 +108,44 @@ export class RestCountriesService {
       take: 5,
     });
 
-
     // Generate SVG and save to DB
-    const svgString = this.svgService.generateSummarySvgString(now, top5, totalCountries);
- await this.prisma.meta.upsert({
-  where: { id: 1 },
-  update: { 
-    total_countries: totalCountries,
-    last_refreshed_at: now,
-    summary_svg: svgString,  // now recognized
-  },
-  create: { 
-    id: 1,
-    total_countries: totalCountries,
-    last_refreshed_at: now,
-    summary_svg: svgString,
-  },
-});
+    const svgString = this.svgService.generateSummarySvgString(
+      now,
+      top5,
+      totalCountries,
+    );
+    await this.prisma.meta.upsert({
+      where: { id: 1 },
+      update: {
+        total_countries: totalCountries,
+        last_refreshed_at: now,
+        summary_svg: svgString, // now recognized
+      },
+      create: {
+        id: 1,
+        total_countries: totalCountries,
+        last_refreshed_at: now,
+        summary_svg: svgString,
+      },
+    });
 
-
-    return { message: 'Refreshed', total_countries: totalCountries, last_refreshed_at: now.toISOString() };
+    return {
+      message: 'Refreshed',
+      total_countries: totalCountries,
+      last_refreshed_at: now.toISOString(),
+    };
   }
 
-    /** Get SVG from database */
+  /** Get SVG from database */
   async getSvg(): Promise<string> {
     const meta = await this.prisma.meta.findUnique({ where: { id: 1 } });
-    return meta?.summary_svg ?? `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
+    return (
+      meta?.summary_svg ??
+      `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
       <rect width="100%" height="100%" fill="#fff"/>
       <text x="50" y="50" font-size="24" fill="red">No summary available</text>
-    </svg>`;
+    </svg>`
+    );
   }
 
   /** Get all countries with optional filters */
@@ -143,8 +159,8 @@ export class RestCountriesService {
       sort === 'gdp_desc'
         ? { estimated_gdp: 'desc' }
         : sort === 'gdp_asc'
-        ? { estimated_gdp: 'asc' }
-        : undefined;
+          ? { estimated_gdp: 'asc' }
+          : undefined;
 
     const countries = await this.prisma.country.findMany({ where, orderBy });
     return countries.map((c) => ({
@@ -162,28 +178,32 @@ export class RestCountriesService {
   }
 
   /** Get one country by name */
-async getByName(name: string) {
-  const result = await this.prisma.$queryRaw<any[]>`
+  async getByName(name: string) {
+    const result = await this.prisma.$queryRaw<any[]>`
     SELECT * FROM Country
     WHERE LOWER(name) = ${name.trim().toLowerCase()}
     LIMIT 1
   `;
 
-  const country = result[0];
-  if (!country) {
-    throw new HttpException({ error: 'Country not found' }, HttpStatus.NOT_FOUND);
+    const country = result[0];
+    if (!country) {
+      throw new HttpException(
+        { error: 'Country not found' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return country;
   }
-
-  return country;
-}
-
-
-
 
   /** Delete country by name */
   async deleteByName(name: string) {
     const country = await this.prisma.country.findFirst({ where: { name } });
-    if (!country) throw new HttpException({ error: 'Country not found' }, HttpStatus.NOT_FOUND);
+    if (!country)
+      throw new HttpException(
+        { error: 'Country not found' },
+        HttpStatus.NOT_FOUND,
+      );
     await this.prisma.country.delete({ where: { id: country.id } });
     return { message: 'Country deleted' };
   }
