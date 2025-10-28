@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MeModule } from './me/me.module';
-import { StringAnalyserModule } from './string-analyser/string-analyser.module';
-import { RestCountriesModule } from './rest-countries/rest-countries.module';
-
+import { RestCountriesModule } from './02-rest-countries/rest-countries.module';
+import { MeModule } from './00-me/me.module';
+import { StringAnalyserModule } from './01-string-analyser/string-analyser.module';
 @Module({
   imports: [
     ConfigModule.forRoot({

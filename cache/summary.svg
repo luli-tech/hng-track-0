@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="40" y="60" font-size="36" font-weight="bold" fill="#111">Countries Summary</text>
+<text x="40" y="110" font-size="20" fill="#111">Total countries: 250</text>
+<text x="40" y="140" font-size="20" fill="#111">Last refreshed: 2025-10-28T01:19:48.440Z</text>
+<text x="40" y="190" font-size="24" fill="#111">Top 5 by Estimated GDP</text>
+<text x="60" y="230" font-size="18" fill="#111">1. United States of America — 474,457,137,120</text>
+<text x="60" y="264" font-size="18" fill="#111">2. China — 327,438,462,899</text>
+<text x="60" y="298" font-size="18" fill="#111">3. Germany — 143,957,892,534.8</text>
+<text x="60" y="332" font-size="18" fill="#111">4. France — 130,047,610,166.4</text>
+<text x="60" y="366" font-size="18" fill="#111">5. United Kingdom of Great Britain and Northern Ireland — 127,052,740,082.6</text>
+</svg>

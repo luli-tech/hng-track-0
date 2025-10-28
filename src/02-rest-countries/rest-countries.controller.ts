@@ -1,34 +1,48 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+// src/02-rest-countries/rest-countries.controller.ts
+import { Controller, Get, Post, Delete, Param, Query, Res, HttpCode } from '@nestjs/common';
 import { RestCountriesService } from './rest-countries.service';
-import { CreateRestCountryDto } from './dto/create-rest-country.dto';
-import { UpdateRestCountryDto } from './dto/update-rest-country.dto';
+import type { Response } from 'express';
+import { existsSync, readFileSync } from 'fs';
 
-@Controller('rest-countries')
+@Controller('restCountries')
 export class RestCountriesController {
-  constructor(private readonly restCountriesService: RestCountriesService) {}
+  constructor(private readonly service: RestCountriesService) {}
 
-  @Post()
-  create(@Body() createRestCountryDto: CreateRestCountryDto) {
-    return this.restCountriesService.create(createRestCountryDto);
+  @Post('countries/refresh')
+  @HttpCode(200)
+  async refresh() {
+    return this.service.refreshCountries();
   }
 
-  @Get()
-  findAll() {
-    return this.restCountriesService.findAll();
+
+  @Get('countries')
+  async getAll(@Query() query: any) {
+    return this.service.getAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.restCountriesService.findOne(+id);
+  @Get('countries/image')
+async getImage(@Res() res: Response) {
+  const svg = await this.service.getSvg();
+  res.setHeader('Content-Type', 'image/svg+xml');
+  return res.send(svg);
+}
+
+
+  @Get('countries/:name')
+  async getOne(@Param('name') name: string) {
+    return this.service.getByName(name);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRestCountryDto: UpdateRestCountryDto) {
-    return this.restCountriesService.update(+id, updateRestCountryDto);
+
+  @Delete('countries/:name')
+  async delete(@Param('name') name: string) {
+    return this.service.deleteByName(name);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.restCountriesService.remove(+id);
+  @Get('status')
+  async getStatus() {
+    return this.service.getStatus();
   }
+
+
 }
